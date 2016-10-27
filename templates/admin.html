@@ -58,6 +58,10 @@
           <h1 class="page-header">Dashboard</h1>
 
          
+          <form id="new_song" action="song" method="post">
+          <input id="song_title" name="song_title" placeholder="Song title" />
+          <input type="submit" class="btn btn-primary" value="Go &raquo;" />
+          </form>
 
           <h2 class="sub-header">Section title</h2>
           <div class="table-responsive">
@@ -65,19 +69,13 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
+                  <th>Song title</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>1,001</td>
+                  <td>1</td>
                   <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
                 </tr>
                 
               </tbody>
@@ -93,5 +91,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(() => {
+        $('#new_song').submit(e => {
+          e.preventDefault();
+          // console.log($(this).serializeArray());
+          const data = {
+            title: $('input[name="song_title"]').val()
+          };
+          $.post( '/song', data, data => {
+            console.log(data);
+          }, 'json');
+        });
+      });
+    </script>
   </body>
 </html>

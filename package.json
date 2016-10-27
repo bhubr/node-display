@@ -2,7 +2,9 @@
   "name": "node-display",
   "dependencies": {
     "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
     "express": "4.x",
-    "mustache": "^2.2.1"
+    "mustache": "^2.2.1",
+    "socket.io": "^1.5.1"
   }
 }
