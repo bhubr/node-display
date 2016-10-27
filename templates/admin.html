@@ -72,12 +72,13 @@
                   <th>Song title</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Lorem</td>
-                </tr>
-                
+              <tbody id="list-body">
+                {{#songs}}
+                  <tr>
+                    <td>{{id}}</td>
+                    <td>{{songTitle}}</td>
+                  </tr>
+                {{/songs}}
               </tbody>
             </table>
           </div>
@@ -95,13 +96,16 @@
     <script type="text/javascript">
       $(document).ready(() => {
         $('#new_song').submit(e => {
+          var $inputTitle = $('input[name="song_title"]');
           e.preventDefault();
           // console.log($(this).serializeArray());
           const data = {
-            title: $('input[name="song_title"]').val()
+            title: $inputTitle.val()
           };
-          $.post( '/song', data, data => {
-            console.log(data);
+          $inputTitle.val('');
+          $.post( '/admin/song', data, data => {
+            // console.log(data);
+            $('#list-body').append('<tr><td>' + data.id + '</td><td>' + data.title + '</td></tr>');
           }, 'json');
         });
       });

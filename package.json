@@ -6,6 +6,7 @@
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "express": "4.x",
+    "lodash": "^4.16.4",
     "mustache": "^2.2.1",
     "sequelize": "^3.24.6",
     "socket.io": "^1.5.1",

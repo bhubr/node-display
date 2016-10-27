@@ -1,22 +1,29 @@
+// -------------
+// SERVER
+// -------------
+
+
+// ----- REQUIRE MODULES -----
 var Promise    = require('bluebird');
 var Mustache   = require('mustache');
 var express    = require('express');
 var fs         = require('fs');
 var bodyParser = require('body-parser')
 var Sequelize  = require('sequelize');
+var _          = require('lodash');
+
+// ----- SEQUELIZE: instantiate and define models -----
 var sequelize = new Sequelize('database', 'username', 'password', {
   host: 'localhost',
   dialect: 'sqlite',
-
   pool: {
     max: 5,
     min: 0,
     idle: 10000
   },
-
-  // SQLite only
   storage: __dirname + '/database.sqlite'
 });
+
 var Song = sequelize.define('song', {
   songTitle: {
     type: Sequelize.STRING,
@@ -26,75 +33,91 @@ var Song = sequelize.define('song', {
   freezeTableName: true // Model tableName will be the same as the model name
 });
 
-var tmplFiles  = ['admin', 'front'];
-// var promises  = [];
+
+// ----- Other variables and Express instance -----
+var tmplFiles     = ['admin', 'front'];
 var readFileAsync = Promise.promisify(fs.readFile);
-var templates  = {};
-
-var app        = express();
-// var jsonParser = bodyParser.json();
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-var server     = require('http').Server(app);
-var io         = require('socket.io')(server);
-server.listen(3001);
+var templates     = {};
 var socket;
+var app           = express();
+var urlencParser  = bodyParser.urlencoded({ extended: false });
+var server        = require('http').Server(app);
+var io            = require('socket.io')(server);
+server.listen(3001);
 
+// Serve static files
 app.use(express.static('public'));
 
+
+// ----- LOAD TEMPLATES -----
+// Load and parse a Mustache template
 function loadTemplate(template) {
-  // return function() {
     return readFileAsync(__dirname + '/templates/' + template + '.html')
     .then(function(result) { return result.toString(); })
     .then(function(_template) {
-      // console.log(_template);
       Mustache.parse(_template);
       return _template;
     });
-  // };
 }
-
-// templates.forEach(function(template) {
-//   // console.log(template);
-//   promises.push(loadTemplate(template));
-// });
-// console.log(promises);
+// Pre-load all templates
 Promise.map(tmplFiles, loadTemplate)
 .then(function(compiledTemplates) {
-  // console.log(result);
   tmplFiles.forEach(function(templateName, idx) {
     templates[templateName] = compiledTemplates[idx];
   });
-  // console.log(templates);
 });
 
+
+// ----- DEFINE ROUTES -----
+
+// Admin route
 app.get('/admin', function(req, res) {
-  // res.json({ pouet: 'pouet' });
-  res.send(Mustache.render(templates.admin));
+  Song.findAll()
+  .then(function(songs) {
+    res.send(Mustache.render(templates.admin, { songs: songs }));
+  });
 });
 
-app.get('/', function(req, res) {
-  // res.json({ pouet: 'pouet' });
-  res.send(Mustache.render(templates.front));
-});
-
-app.post('/song', urlencodedParser, function(req, res) {
-  // console.log(req.body);
+// Create a song
+app.post('/admin/song', urlencParser, function(req, res) {
   var songTitle = req.body.title;
   return Song.create({
     songTitle: songTitle
   })
   .then(function(song) {
-    console.log(song);
-  socket.emit('news', { songTitle: songTitle });
-  res.json({ title: songTitle });
+    socket.emit('newSong', { songTitle: songTitle });
+    res.json({
+      id: song.dataValues.id,
+      title: songTitle
+    });
   });
-  // res.send(Mustache.render(templates.front));
 });
 
+// Front route
+app.get('/', function(req, res) {
+  Song.findAll({ order: [['id', 'DESC']], limit: 2 })
+  .then(function(_songs) {
+    var songs = _.map( _songs, 'dataValues' );
+    var current = '';
+    var previous = '';
+    if( songs.length > 0 ) {
+      current = songs[0].songTitle;
+    }
+    if( songs.length > 1 ) {
+      previous = songs[1].songTitle;
+    }
+    res.send(Mustache.render(templates.front, { current: current, previous: previous }));
+  });
+});
+
+
+// ----- SOCKET.IO connection/setup -----
 io.on('connection', function (_socket) {
   socket = _socket;
 });
 
+
+// Create tables if needed and launch app
 Song.sync({force: false}).then(function () {
   app.listen(3000, function () {
     console.log('Example app listening on port ' + 3000);
