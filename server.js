@@ -4,13 +4,14 @@
 
 
 // ----- REQUIRE MODULES -----
-var Promise    = require('bluebird');
-var Mustache   = require('mustache');
-var express    = require('express');
-var fs         = require('fs');
-var bodyParser = require('body-parser')
-var Sequelize  = require('sequelize');
-var _          = require('lodash');
+var Promise     = require('bluebird');
+var Mustache    = require('mustache');
+var express     = require('express');
+var fs          = require('fs');
+var bodyParser  = require('body-parser')
+var Sequelize   = require('sequelize');
+var _           = require('lodash');
+var querystring = require('querystring');
 
 // ----- SEQUELIZE: instantiate and define models -----
 var sequelize = new Sequelize('database', 'username', 'password', {
@@ -35,8 +36,9 @@ var Song = sequelize.define('song', {
 
 
 // ----- Other variables and Express instance -----
-var tmplFiles     = ['admin', 'front'];
+var tmplFiles     = ['admin_main', 'admin_songs', 'front'];
 var readFileAsync = Promise.promisify(fs.readFile);
+var readdirAsync = Promise.promisify(fs.readdir);
 var templates     = {};
 var socket;
 var app           = express();
@@ -71,10 +73,18 @@ Promise.map(tmplFiles, loadTemplate)
 // ----- DEFINE ROUTES -----
 
 // Admin route
-app.get('/admin', function(req, res) {
+app.get('/admin/main', function(req, res) {
+  readdirAsync(__dirname + '/public/sozi')
+  .then(function(files) {
+    res.send(Mustache.render(templates.admin_main, { files: files }));
+  });
+});
+
+// Admin route
+app.get('/admin/songs', function(req, res) {
   Song.findAll()
   .then(function(songs) {
-    res.send(Mustache.render(templates.admin, { songs: songs }));
+    res.send(Mustache.render(templates.admin_songs, { songs: songs }));
   });
 });
 
@@ -90,6 +100,18 @@ app.post('/admin/song', urlencParser, function(req, res) {
       id: song.dataValues.id,
       title: songTitle
     });
+  });
+});
+
+// Play video
+app.post('/admin/youtube', urlencParser, function(req, res) {
+  var videoUrl = req.body.url;
+  var urlSegments = videoUrl.split('?');
+  if (urlSegments.length < 2) return res.json({ success: false });
+  var qsParsed = querystring.parse(urlSegments[1]);
+  socket.emit('video', { videoId: qsParsed.v });
+  res.json({
+    videoUrl: videoUrl
   });
 });
 

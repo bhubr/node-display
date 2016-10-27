@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Dashboard Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Dashboard example CSS -->
+    <link href="/css/dashboard.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="/admin/main">Infos/Vidéos/Pub <span class="sr-only">(current)</span></a></li>
+            <li><a href="/admin/songs">Titre en cours</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Affichage principal (Infos/Vidéos/Pub)</h1>
+
+          <h2 class="sub-header">Vidéo Youtube</h2>
+         
+          <form id="video_youtube" method="post">
+          <input id="video_url" name="video_url" placeholder="Copier/coller URL vidéo" />
+          <input type="submit" class="btn btn-primary" value="Go &raquo;" />
+          </form>
+
+          <h2 class="sub-header">Liste des titres</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Présentation</th>
+                </tr>
+              </thead>
+              <tbody id="list-body">
+                {{#files}}
+                  <tr>
+                    <td></td>
+                    <td>{{.}}</td>
+                  </tr>
+                {{/files}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(() => {
+        $('#video_youtube').submit(e => {
+          var $inputUrl = $('input[name="video_url"]');
+          e.preventDefault();
+          // console.log($(this).serializeArray());
+          const data = {
+            url: $inputUrl.val()
+          };
+          $inputUrl.val('');
+          $.post( '/admin/youtube', data, data => {
+            console.log(data);
+            // $('#list-body').append('<tr><td>' + data.id + '</td><td>' + data.title + '</td></tr>');
+          }, 'json');
+        });
+      });
+    </script>
+  </body>
+</html>
