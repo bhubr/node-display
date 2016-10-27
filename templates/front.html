@@ -15,14 +15,334 @@
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
+    <style>
+    #content {
+      width: 100%;
+      min-height: 90%;
+      border: 4px solid #f0f;
+      text-align: center;
+      font-size: x-large;
+      vertical-align: middle;
+    }
+    #songs {
+      /*font-family: Arial;*/
+      font-size: 3em;
+      padding-top: 20px;
+      width: 100%;
+      position: fixed;
+      top: 90%;
+      min-height: 10%;
+      background: black;
+      text-align: center;
+      vertical-align: middle;
+    }
+    #songs p {
+      position: absolute;
+
+      font-family: Tahoma, Arial, sans-serif;
+
+      width: 100%;
+      height: 100%;
+
+      margin: 0;
+      line-height: 50px;
+
+      text-align: center;
+
+      color: #fff;
+        text-shadow: 1px 1px 0px #000000;
+        filter: dropshadow(color=#000000, offx=1, offy=1);
+
+      transform:translateX(100%);
+      -moz-transform:translateX(100%);
+      -webkit-transform:translateX(100%);
+    }
+    #songs p:nth-child(1) {
+      animation: left-one 20s ease infinite;
+      -moz-animation: left-one 20s ease infinite;
+      -webkit-animation: left-one 20s ease infinite;
+    }
+    #songs p:nth-child(2) {
+      animation: left-two 20s ease infinite;
+      -moz-animation: left-two 20s ease infinite;
+      -webkit-animation: left-two 20s ease infinite;
+    }
+    #songs.down p {
+      transform:translateY(-100%);
+      -moz-transform:translateY(-100%);
+      -webkit-transform:translateY(-100%);
+    }
+    #songs.down p:nth-child(1) {
+      animation: down-one 20s ease infinite;
+      -moz-animation: down-one 20s ease infinite;
+      -webkit-animation: down-one 20s ease infinite;
+    }
+    #songs.down p:nth-child(2) {
+      animation: down-two 20s ease infinite;
+      -moz-animation: down-two 20s ease infinite;
+      -webkit-animation: down-two 20s ease infinite;
+    }
+    #songs.up p { 
+      transform:translateY(100%);
+      -moz-transform:translateY(100%);
+      -webkit-transform:translateY(100%);
+    }
+    #songs.up p:nth-child(1) {
+      animation: up-one 20s ease infinite;
+      -moz-animation: up-one 20s ease infinite;
+      -webkit-animation: up-one 20s ease infinite;
+    }
+    #songs.up p:nth-child(2) {
+      animation: up-two 20s ease infinite;
+      -moz-animation: up-two 20s ease infinite;
+      -webkit-animation: up-two 20s ease infinite;
+    }
+
+    /*================================
+      Move the Marquee to the Left
+    ==================================*/
+
+    /** Mozilla Firefox Keyframes **/
+    @-moz-keyframes left-one {
+      0%  {
+        -moz-transform:translateX(100%);
+      }
+      10% {
+        -moz-transform:translateX(0);
+      }
+      40% {
+        -moz-transform:translateX(0);
+      }
+      50% {
+        -moz-transform:translateX(-100%);
+      }
+      100%{
+        -moz-transform:translateX(-100%);
+      }
+    }
+    @-moz-keyframes left-two {
+      0% {
+        -moz-transform:translateX(100%);
+      }
+      50% {
+        -moz-transform:translateX(100%);
+      }
+      60% {
+        -moz-transform:translateX(0);   
+      }
+      90% {
+        -moz-transform:translateX(0);   
+      }
+      100%{
+        -moz-transform:translateX(-100%);
+      }
+    }
+    /** Webkit Keyframes **/
+    @-webkit-keyframes left-one {
+      0% {
+        -webkit-transform:translateX(100%);
+      }
+      10% {
+        -webkit-transform:translateX(0);
+      }
+      40% {
+        -webkit-transform:translateX(0);
+      }
+      50% {
+        -webkit-transform:translateX(-100%);
+      }
+      100%{
+        -webkit-transform:translateX(-100%);
+      }
+    }
+    @-webkit-keyframes left-two {
+      0% {
+        -webkit-transform:translateX(100%);
+      }
+      50% {
+        -webkit-transform:translateX(100%);
+      }
+      60% {
+        -webkit-transform:translateX(0);    
+      }
+      90% {
+        -webkit-transform:translateX(0);    
+      }
+      100%{
+        -webkit-transform:translateX(-100%);
+      }
+    }
+
+    /*================================
+      Move the Marquee Downwards
+    ==================================*/
+
+    /** Mozilla Firefox Keyframes **/
+    @-moz-keyframes down-one {
+      0%  {
+        -moz-transform:translateY(-100%);
+      }
+      10% {
+        -moz-transform:translateY(0);
+      }
+      40% {
+        -moz-transform:translateY(0);
+      }
+      50% {
+        -moz-transform:translateY(100%);
+      }
+      100%{
+        -moz-transform:translateY(100%);
+      }
+    }
+    @-moz-keyframes down-two {
+      0% {
+        -moz-transform:translateY(-100%);
+      }
+      50% {
+        -moz-transform:translateY(-100%);
+      }
+      60% {
+        -moz-transform:translateY(0);   
+      }
+      90% {
+        -moz-transform:translateY(0);   
+      }
+      100%{
+        -moz-transform:translateY(100%);
+      }
+    }
+
+    /** Webkit Keyframes **/
+    @-webkit-keyframes down-one {
+      0% {
+        -webkit-transform:translateY(-100%);
+      }
+      10% {
+        -webkit-transform:translateY(0);
+      }
+      40% {
+        -webkit-transform:translateY(0);
+      }
+      50% {
+        -webkit-transform:translateY(100%);
+      }
+      100%{
+        -webkit-transform:translateY(100%);
+      }
+    }
+    @-webkit-keyframes down-two {
+      0% {
+        -webkit-transform:translateY(-100%);
+      }
+      50% {
+        -webkit-transform:translateY(-100%);
+      }
+      60% {
+        -webkit-transform:translateY(0);    
+      }
+      90% {
+        -webkit-transform:translateY(0);    
+      }
+      100%{
+        -webkit-transform:translateY(100%);
+      }
+    }
+
+    /*================================
+      Move the Marquee Upwards
+    ==================================*/
+
+    /** Mozilla Firefox Keyframes **/
+    @-moz-keyframes up-one {
+      0%  {
+        -moz-transform:translateY(100%);
+      }
+      10% {
+        -moz-transform:translateY(0);
+      }
+      40% {
+        -moz-transform:translateY(0);
+      }
+      50% {
+        -moz-transform:translateY(-100%);
+      }
+      100%{
+        -moz-transform:translateY(-100%);
+      }
+    }
+    @-moz-keyframes up-two {
+      0% {
+        -moz-transform:translateY(100%);
+      }
+      50% {
+        -moz-transform:translateY(100%);
+      }
+      60% {
+        -moz-transform:translateY(0);   
+      }
+      90% {
+        -moz-transform:translateY(0);   
+      }
+      100%{
+        -moz-transform:translateY(-100%);
+      }
+    }
+
+    /** Webkit Keyframes **/
+    @-webkit-keyframes up-one {
+      0% {
+        -webkit-transform:translateY(100%);
+      }
+      10% {
+        -webkit-transform:translateY(0);
+      }
+      40% {
+        -webkit-transform:translateY(0);
+      }
+      50% {
+        -webkit-transform:translateY(-100%);
+      }
+      100%{
+        -webkit-transform:translateY(-100%);
+      }
+    }
+    @-webkit-keyframes up-two {
+      0% {
+        -webkit-transform:translateY(100%);
+      }
+      50% {
+        -webkit-transform:translateY(100%);
+      }
+      60% {
+        -webkit-transform:translateY(0);    
+      }
+      90% {
+        -webkit-transform:translateY(0);    
+      }
+      100%{
+        -webkit-transform:translateY(-100%);
+      }
+    }
+    </style>
+
   </head>
 
   <body>
 
     <div class="container-fluid">
       <div class="row" id="content">
-      Current: {{current}} previous: {{previous}}
+        <div class="col col-md-12">
+          Contenu (pub/infos/vidéos) ici
+        </div> 
       </div>
+      <div class="row" id="songs">
+        <div class="col col-md-12">
+          <p>Titre en cours: {{current}}</p>
+          <p>Titre précédent: {{previous}}</p>
+        </div> 
+      </div>
+      
     </div>
 
     <!-- Bootstrap core JavaScript
@@ -40,7 +360,7 @@
         // console.log(data);
         previous = current;
         current = data.songTitle;
-        $('#content').replaceWith('<div class="row" id="content">Current: ' + current + ', previous: ' + previous + '</div>');
+        $('#songs').replaceWith('<div class="row" id="songs"><p>Titre en cours: ' + current + '</p><p> Titre précédent: ' + previous + '</p></div>');
         // socket.emit('my other event', { my: 'data' });
       });
     </script>
