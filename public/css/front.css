@@ -17,6 +17,7 @@ body {
   /*margin: 0 auto;*/
 }
 #songs {
+  z-index: 999;
   font-size: 3em;
   padding-top: 20px;
   width: 100%;

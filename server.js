@@ -152,7 +152,15 @@ app.post('/admin/song', urlencParser, function(req, res) {
   });
 });
 
-// Show image or presentation
+
+// Show Sozi presentation
+app.post('/admin/sozi', urlencParser, function(req, res) {
+  var name  = req.body.name;
+   socket.emit('sozi', { name: name });
+   res.json({ name: name });
+});
+
+// Show img slideshow
 app.post('/admin/slideshow', urlencParser, function(req, res) {
   var folder  = req.body.name;
   readdirAsync(__dirname + '/public/images/' + folder)

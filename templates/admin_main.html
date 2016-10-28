@@ -58,6 +58,7 @@
                 {{#presentations}}
                   <tr>
                     <td>{{.}}</td>
+                    <td><button type="button" class="btn btn-sm" data-name="{{.}}">Afficher</button></td>
                   </tr>
                 {{/presentations}}
               </tbody>
@@ -100,16 +101,23 @@
           }, 'json');
         });
 
-        $('.slideshow').find('button').click(e => {
+        $('#pres-list').find('button').click(e => {
           var $btn = $(e.target);
-          // var imageUrl = $btn.data('name');
           var data = {
             name:  $btn.data('name')
-          //   type: 'image', url: imageUrl
+          };
+          $.post( '/admin/sozi', data, data => {
+            console.log(data);
+          }, 'json');
+        });
+
+        $('.slideshow').find('button').click(e => {
+          var $btn = $(e.target);
+          var data = {
+            name:  $btn.data('name')
           };
           $.post( '/admin/slideshow', data, data => {
             console.log(data);
-            // $('#list-body').append('<tr><td>' + data.id + '</td><td>' + data.title + '</td></tr>');
           }, 'json');
         });
       });

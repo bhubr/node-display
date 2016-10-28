@@ -67,9 +67,15 @@
         // socket.emit('my other event', { my: 'data' });
       });
 
+      socket.on('sozi', function (data) {
+        console.log(data);
+        $('#content').replaceWith(' <iframe src="/sozi/' + data.name + '" type="image/svg+xml" id="content" frameborder="0"/>');
+        // socket.emit('my other event', { my: 'data' });
+      });
+
       socket.on('slideshow', function (data) {
         console.log(data);
-        $('#content').replaceWith('<div id="content" class="cycle-slideshow" data-cycle-fx="scrollHorz" data-cycle-timeout="3000"><div class="cycle-caption"></div></div>');
+        $('#content').replaceWith('<div id="content" class="cycle-slideshow" data-cycle-fx="scrollHorz" data-cycle-timeout="5000"><div class="_cycle-caption"></div></div>');
         $('#content').cycle();
         for (var i=0; i < data.images.length; i++) {
           $('#content').cycle('add', data.images[i]);
