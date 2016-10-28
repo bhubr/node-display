@@ -2,6 +2,9 @@
 // SERVER
 // -------------
 
+// ----- CONSTANTS -----
+var PORT_MAIN = 3000;
+var PORT_SIO  = 3001;
 
 // ----- REQUIRE MODULES -----
 var Promise     = require('bluebird');
@@ -12,6 +15,7 @@ var bodyParser  = require('body-parser')
 var Sequelize   = require('sequelize');
 var _           = require('lodash');
 var querystring = require('querystring');
+var chain       = require('store-chain');
 
 // ----- SEQUELIZE: instantiate and define models -----
 var sequelize = new Sequelize('database', 'username', 'password', {
@@ -30,6 +34,20 @@ var Song = sequelize.define('song', {
     type: Sequelize.STRING,
     field: 'song_title' // Will result in an attribute that is firstName when user facing but first_name in the database
   }
+}, {
+  freezeTableName: true // Model tableName will be the same as the model name
+});
+
+var Video = sequelize.define('song', {
+  url: {
+    type: Sequelize.STRING
+  },
+  hoster: {
+    type: Sequelize.STRING
+  },
+  identifier: {
+    type: Sequelize.STRING
+  } 
 }, {
   freezeTableName: true // Model tableName will be the same as the model name
 });
@@ -74,9 +92,13 @@ Promise.map(tmplFiles, loadTemplate)
 
 // Admin route
 app.get('/admin/main', function(req, res) {
-  readdirAsync(__dirname + '/public/sozi')
-  .then(function(files) {
-    res.send(Mustache.render(templates.admin_main, { files: files }));
+  chain({
+    presentations: readdirAsync(__dirname + '/public/sozi'),
+    images: readdirAsync(__dirname + '/public/images')
+  })
+  .get(function(store) {
+    store.images.shift();
+    res.send(Mustache.render(templates.admin_main, { presentations: store.presentations, images: store.images }));
   });
 });
 
@@ -103,6 +125,16 @@ app.post('/admin/song', urlencParser, function(req, res) {
   });
 });
 
+// Show image or presentation
+app.post('/admin/display', urlencParser, function(req, res) {
+  var url  = req.body.url;
+  var type = req.body.type;
+  socket.emit(type, { url: url });
+  res.json({
+    url: url
+  });
+});
+
 // Play video
 app.post('/admin/youtube', urlencParser, function(req, res) {
   var videoUrl = req.body.url;
@@ -114,7 +146,6 @@ app.post('/admin/youtube', urlencParser, function(req, res) {
     videoUrl: videoUrl
   });
 });
-
 // Front route
 app.get('/', function(req, res) {
   Song.findAll({ order: [['id', 'DESC']], limit: 2 })
@@ -122,13 +153,16 @@ app.get('/', function(req, res) {
     var songs = _.map( _songs, 'dataValues' );
     var current = '';
     var previous = '';
+    var fullUrl = req.protocol + '://' + req.get('host');
+    var socketIoUrl = fullUrl.replace( PORT_MAIN, PORT_SIO );
+    console.log('full', fullUrl, 'base', req.baseUrl);
     if( songs.length > 0 ) {
       current = songs[0].songTitle;
     }
     if( songs.length > 1 ) {
       previous = songs[1].songTitle;
     }
-    res.send(Mustache.render(templates.front, { current: current, previous: previous }));
+    res.send(Mustache.render(templates.front, { current: current, previous: previous, socketIoUrl: socketIoUrl }));
   });
 });
 
@@ -141,8 +175,8 @@ io.on('connection', function (_socket) {
 
 // Create tables if needed and launch app
 Song.sync({force: false}).then(function () {
-  app.listen(3000, function () {
-    console.log('Example app listening on port ' + 3000);
+  app.listen(PORT_MAIN, function () {
+    console.log('Example app listening on port ' + PORT_MAIN);
   });
 });
 

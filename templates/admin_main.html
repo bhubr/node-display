@@ -10,13 +10,19 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>Playlist admin - écran principal</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap Dashboard example CSS -->
     <link href="/css/dashboard.css" rel="stylesheet">
+
+    <style>
+    .thumb {
+      max-width: 128px;
+    }
+    </style>
 
   </head>
 
@@ -40,25 +46,46 @@
           <input type="submit" class="btn btn-primary" value="Go &raquo;" />
           </form>
 
-          <h2 class="sub-header">Liste des titres</h2>
+          <h2 class="sub-header">Présentations Sozi</h2>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Présentation</th>
                 </tr>
               </thead>
-              <tbody id="list-body">
-                {{#files}}
+              <tbody id="pres-list">
+                {{#presentations}}
                   <tr>
-                    <td></td>
                     <td>{{.}}</td>
                   </tr>
-                {{/files}}
+                {{/presentations}}
               </tbody>
             </table>
           </div>
+
+          <h2 class="sub-header">Images</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Fichier image</th>
+                  <th>Aperçu</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="img-list">
+                {{#images}}
+                  <tr>
+                    <td>{{.}}</td>
+                    <td><img class="thumb" src="/images/{{.}}" alt="{{.}}" /></td>
+                    <td><button type="button" class="btn btn-sm" data-src="/images/{{.}}">Afficher</button>
+                  </tr>
+                {{/images}}
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
     </div>
@@ -66,8 +93,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
 
     <script type="text/javascript">
@@ -75,12 +101,23 @@
         $('#video_youtube').submit(e => {
           var $inputUrl = $('input[name="video_url"]');
           e.preventDefault();
-          // console.log($(this).serializeArray());
           const data = {
             url: $inputUrl.val()
           };
           $inputUrl.val('');
           $.post( '/admin/youtube', data, data => {
+            console.log(data);
+            // $('#list-body').append('<tr><td>' + data.id + '</td><td>' + data.title + '</td></tr>');
+          }, 'json');
+        });
+
+        $('#img-list').find('button').click(e => {
+          var $btn = $(e.target);
+          var imageUrl = $btn.data('src');
+          var data = {
+            type: 'image', url: imageUrl
+          };
+          $.post( '/admin/display', data, data => {
             console.log(data);
             // $('#list-body').append('<tr><td>' + data.id + '</td><td>' + data.title + '</td></tr>');
           }, 'json');

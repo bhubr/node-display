@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>Playlist client</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -30,6 +30,10 @@
       text-align: center;
       font-size: x-large;
       vertical-align: middle;
+    }
+    #content img {
+      max-width: 100%;
+      max-height: 100%;
     }
     #songs {
       font-size: 3em;
@@ -341,7 +345,46 @@
       <div class="row" id="content-wrapper">
         <div class="col col-md-12">
           <!-- Contenu (pub/infos/vidéos) ici -->
-          <iframe src="/sozi/first.html" type="image/svg+xml" id="content"></iframe>
+          <!-- <iframe src="/sozi/first.html" type="image/svg+xml" id="content"></iframe> -->
+          <ul id="content">
+              <li>
+                <h3>TinySlideshow v1</h3>
+                <span>images/CUBA-2.jpg</span>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut urna. Mauris nulla. Donec nec mauris. Proin nulla dolor, bibendum et, dapibus in, euismod ut, felis.</p>
+                <a href="#"><img src="thumbnails/squid-thumb.jpg" alt="Squid" /></a>
+              </li>
+              <li>
+                <h3>Sea Turtle</h3>
+                <span>images/havana-salsa.jpg</span>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut urna. Mauris nulla. Donec nec mauris. Proin nulla dolor, bibendum et, dapibus in, euismod ut, felis.</p>
+                <a href="#"><img src="thumbnails/squid-thumb.jpg" alt="Squid" /></a>
+              </li>
+              <li>
+                <h3>Red Coral</h3>
+                <span>images/rues-de-havana-a-cuba-avec-voitures-americaines-vintage.jpg</span>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut urna. Mauris nulla. Donec nec mauris. Proin nulla dolor, bibendum et, dapibus in, euismod ut, felis.</p>
+                <a href="#"><img src="thumbnails/squid-thumb.jpg" alt="Squid" /></a>
+              </li>
+            </ul>
+              <div id="wrapper">
+                <div id="fullsize">
+                  <div id="imgprev" class="imgnav" title="Previous Image"></div>
+                  <div id="imglink"></div>
+                  <div id="imgnext" class="imgnav" title="Next Image"></div>
+                  <div id="image"></div>
+                  <div id="information">
+                    <h3></h3>
+                    <p></p>
+                  </div>
+                </div>
+                <div id="thumbnails">
+                  <div id="slideleft" title="Slide Left"></div>
+                  <div id="slidearea">
+                    <div id="slider"></div>
+                  </div>
+                  <div id="slideright" title="Slide Right"></div>
+                </div>
+              </div>
         </div> 
       </div>
       <div class="row" id="songs">
@@ -356,12 +399,12 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/socket.io-1.4.5.js"></script>
+    <script src="/js/slideshow.js"></script>
     <script>
-      var socket = io.connect('http://localhost:3001');
+      var socket = io.connect('{{{socketIoUrl}}}');
       var current = '{{current}}';
       var previous = '{{previous}}';
       socket.on('newSong', function (data) {
@@ -377,6 +420,31 @@
         $('#content').replaceWith('<iframe id="content" type="text/html" src="http://www.youtube.com/embed/' + data.videoId + '?autoplay=1&origin=http://example.com" frameborder="0"/>');
         // socket.emit('my other event', { my: 'data' });
       });
+
+      socket.on('image', function (data) {
+        console.log(data);
+        $('#content').replaceWith('<div id="content"><img src="' + data.url + '" alt="image" /></div>');
+        // socket.emit('my other event', { my: 'data' });
+      });
+
+
+      // $('slideshow').style.display='none';
+      // $('#wrapper').style.display='block';
+      var slideshow=new TINY.slideshow("content");
+      window.onload=function(){
+        slideshow.auto=true;
+        slideshow.speed=5;
+        slideshow.link="linkhover";
+        slideshow.info="information";
+        slideshow.thumbs="slider";
+        slideshow.left="slideleft";
+        slideshow.right="slideright";
+        slideshow.scrollSpeed=4;
+        slideshow.spacing=5;
+        slideshow.active="#fff";
+        slideshow.init("slideshow","image","imgprev","imgnext","imglink");
+      }
+
     </script>
   </body>
 </html>
