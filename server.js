@@ -56,7 +56,7 @@ var Video = sequelize.define('song', {
 // ----- Other variables and Express instance -----
 var tmplFiles     = ['admin_main', 'admin_songs', 'front'];
 var readFileAsync = Promise.promisify(fs.readFile);
-var readdirAsync = Promise.promisify(fs.readdir);
+var readdirAsync  = Promise.promisify(fs.readdir);
 var templates     = {};
 var socket;
 var app           = express();
@@ -90,15 +90,42 @@ Promise.map(tmplFiles, loadTemplate)
 
 // ----- DEFINE ROUTES -----
 
+function readImages(folder) {
+  return readdirAsync(folder);
+}
+
 // Admin route
 app.get('/admin/main', function(req, res) {
   chain({
-    presentations: readdirAsync(__dirname + '/public/sozi'),
-    images: readdirAsync(__dirname + '/public/images')
+    _slideshows: readdirAsync(__dirname + '/public/images')
   })
   .get(function(store) {
-    store.images.shift();
-    res.send(Mustache.render(templates.admin_main, { presentations: store.presentations, images: store.images }));
+    var slideshows = [];
+    var folders = _.map(store._slideshows, function(folder) {
+      return __dirname + '/public/images/' + folder; 
+    });
+    // console.log(folders);
+    return Promise.map(folders, readImages)
+    .then(function(folderContents) {
+      // console.log(folderContents);
+      folderContents.forEach(function(folderContent, idx) {
+        slideshows.push({
+          name: store._slideshows[idx],
+          content: folderContent
+        });
+      });
+      return slideshows;
+      // console.log(slideshows);
+    });
+  })
+  .set('slideshows')
+  .catch(function(error) { console.log(error.stack); })
+  .then(() => readdirAsync(__dirname + '/public/sozi'))
+  .set('presentations')
+  .get(function(store) {
+    // store.images.shift();
+    console.log(store);
+    res.send(Mustache.render(templates.admin_main, { presentations: store.presentations, slideshows: store.slideshows }));
   });
 });
 
@@ -126,12 +153,15 @@ app.post('/admin/song', urlencParser, function(req, res) {
 });
 
 // Show image or presentation
-app.post('/admin/display', urlencParser, function(req, res) {
-  var url  = req.body.url;
-  var type = req.body.type;
-  socket.emit(type, { url: url });
-  res.json({
-    url: url
+app.post('/admin/slideshow', urlencParser, function(req, res) {
+  var folder  = req.body.name;
+  readdirAsync(__dirname + '/public/images/' + folder)
+  .then(function(_images) {
+    var images = _.map(_images, function(img) { return '<img src="/images/' + folder + '/' + img + '" />'; });
+    socket.emit('slideshow', { images: images });
+    res.json({
+      images: images
+    });
   });
 });
 

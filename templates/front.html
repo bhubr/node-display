@@ -14,328 +14,8 @@
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-    body {
-      background: black;
-    }
-    #content-wrapper {
-    }
-    #content {
-      background: #000;
-      min-height: 700px;
-      width: 100%;
-      /*border: 4px solid #f0f;*/
-      border: none;
-      text-align: center;
-      font-size: x-large;
-      vertical-align: middle;
-    }
-    #content img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-    #songs {
-      font-size: 3em;
-      padding-top: 20px;
-      width: 100%;
-      position: fixed;
-      top: 90%;
-      min-height: 10%;
-      background: black;
-      text-align: center;
-      vertical-align: middle;
-    }
-    /* Credits: http://www.hongkiat.com/blog/css3-animation-advanced-marquee/ */
-    #songs p {
-      position: absolute;
-
-      font-family: Tahoma, Arial, sans-serif;
-
-      width: 100%;
-      height: 100%;
-
-      margin: 0;
-      line-height: 50px;
-
-      text-align: center;
-
-      color: #fff;
-        text-shadow: 1px 1px 0px #000000;
-        filter: dropshadow(color=#000000, offx=1, offy=1);
-
-      transform:translateX(100%);
-      -moz-transform:translateX(100%);
-      -webkit-transform:translateX(100%);
-    }
-    #songs p:nth-child(1) {
-      animation: left-one 20s ease infinite;
-      -moz-animation: left-one 20s ease infinite;
-      -webkit-animation: left-one 20s ease infinite;
-    }
-    #songs p:nth-child(2) {
-      animation: left-two 20s ease infinite;
-      -moz-animation: left-two 20s ease infinite;
-      -webkit-animation: left-two 20s ease infinite;
-    }
-    #songs.down p {
-      transform:translateY(-100%);
-      -moz-transform:translateY(-100%);
-      -webkit-transform:translateY(-100%);
-    }
-    #songs.down p:nth-child(1) {
-      animation: down-one 20s ease infinite;
-      -moz-animation: down-one 20s ease infinite;
-      -webkit-animation: down-one 20s ease infinite;
-    }
-    #songs.down p:nth-child(2) {
-      animation: down-two 20s ease infinite;
-      -moz-animation: down-two 20s ease infinite;
-      -webkit-animation: down-two 20s ease infinite;
-    }
-    #songs.up p { 
-      transform:translateY(100%);
-      -moz-transform:translateY(100%);
-      -webkit-transform:translateY(100%);
-    }
-    #songs.up p:nth-child(1) {
-      animation: up-one 20s ease infinite;
-      -moz-animation: up-one 20s ease infinite;
-      -webkit-animation: up-one 20s ease infinite;
-    }
-    #songs.up p:nth-child(2) {
-      animation: up-two 20s ease infinite;
-      -moz-animation: up-two 20s ease infinite;
-      -webkit-animation: up-two 20s ease infinite;
-    }
-
-    /*================================
-      Move the Marquee to the Left
-    ==================================*/
-
-    /** Mozilla Firefox Keyframes **/
-    @-moz-keyframes left-one {
-      0%  {
-        -moz-transform:translateX(100%);
-      }
-      10% {
-        -moz-transform:translateX(0);
-      }
-      40% {
-        -moz-transform:translateX(0);
-      }
-      50% {
-        -moz-transform:translateX(-100%);
-      }
-      100%{
-        -moz-transform:translateX(-100%);
-      }
-    }
-    @-moz-keyframes left-two {
-      0% {
-        -moz-transform:translateX(100%);
-      }
-      50% {
-        -moz-transform:translateX(100%);
-      }
-      60% {
-        -moz-transform:translateX(0);   
-      }
-      90% {
-        -moz-transform:translateX(0);   
-      }
-      100%{
-        -moz-transform:translateX(-100%);
-      }
-    }
-    /** Webkit Keyframes **/
-    @-webkit-keyframes left-one {
-      0% {
-        -webkit-transform:translateX(100%);
-      }
-      10% {
-        -webkit-transform:translateX(0);
-      }
-      40% {
-        -webkit-transform:translateX(0);
-      }
-      50% {
-        -webkit-transform:translateX(-100%);
-      }
-      100%{
-        -webkit-transform:translateX(-100%);
-      }
-    }
-    @-webkit-keyframes left-two {
-      0% {
-        -webkit-transform:translateX(100%);
-      }
-      50% {
-        -webkit-transform:translateX(100%);
-      }
-      60% {
-        -webkit-transform:translateX(0);    
-      }
-      90% {
-        -webkit-transform:translateX(0);    
-      }
-      100%{
-        -webkit-transform:translateX(-100%);
-      }
-    }
-
-    /*================================
-      Move the Marquee Downwards
-    ==================================*/
-
-    /** Mozilla Firefox Keyframes **/
-    @-moz-keyframes down-one {
-      0%  {
-        -moz-transform:translateY(-100%);
-      }
-      10% {
-        -moz-transform:translateY(0);
-      }
-      40% {
-        -moz-transform:translateY(0);
-      }
-      50% {
-        -moz-transform:translateY(100%);
-      }
-      100%{
-        -moz-transform:translateY(100%);
-      }
-    }
-    @-moz-keyframes down-two {
-      0% {
-        -moz-transform:translateY(-100%);
-      }
-      50% {
-        -moz-transform:translateY(-100%);
-      }
-      60% {
-        -moz-transform:translateY(0);   
-      }
-      90% {
-        -moz-transform:translateY(0);   
-      }
-      100%{
-        -moz-transform:translateY(100%);
-      }
-    }
-
-    /** Webkit Keyframes **/
-    @-webkit-keyframes down-one {
-      0% {
-        -webkit-transform:translateY(-100%);
-      }
-      10% {
-        -webkit-transform:translateY(0);
-      }
-      40% {
-        -webkit-transform:translateY(0);
-      }
-      50% {
-        -webkit-transform:translateY(100%);
-      }
-      100%{
-        -webkit-transform:translateY(100%);
-      }
-    }
-    @-webkit-keyframes down-two {
-      0% {
-        -webkit-transform:translateY(-100%);
-      }
-      50% {
-        -webkit-transform:translateY(-100%);
-      }
-      60% {
-        -webkit-transform:translateY(0);    
-      }
-      90% {
-        -webkit-transform:translateY(0);    
-      }
-      100%{
-        -webkit-transform:translateY(100%);
-      }
-    }
-
-    /*================================
-      Move the Marquee Upwards
-    ==================================*/
-
-    /** Mozilla Firefox Keyframes **/
-    @-moz-keyframes up-one {
-      0%  {
-        -moz-transform:translateY(100%);
-      }
-      10% {
-        -moz-transform:translateY(0);
-      }
-      40% {
-        -moz-transform:translateY(0);
-      }
-      50% {
-        -moz-transform:translateY(-100%);
-      }
-      100%{
-        -moz-transform:translateY(-100%);
-      }
-    }
-    @-moz-keyframes up-two {
-      0% {
-        -moz-transform:translateY(100%);
-      }
-      50% {
-        -moz-transform:translateY(100%);
-      }
-      60% {
-        -moz-transform:translateY(0);   
-      }
-      90% {
-        -moz-transform:translateY(0);   
-      }
-      100%{
-        -moz-transform:translateY(-100%);
-      }
-    }
-
-    /** Webkit Keyframes **/
-    @-webkit-keyframes up-one {
-      0% {
-        -webkit-transform:translateY(100%);
-      }
-      10% {
-        -webkit-transform:translateY(0);
-      }
-      40% {
-        -webkit-transform:translateY(0);
-      }
-      50% {
-        -webkit-transform:translateY(-100%);
-      }
-      100%{
-        -webkit-transform:translateY(-100%);
-      }
-    }
-    @-webkit-keyframes up-two {
-      0% {
-        -webkit-transform:translateY(100%);
-      }
-      50% {
-        -webkit-transform:translateY(100%);
-      }
-      60% {
-        -webkit-transform:translateY(0);    
-      }
-      90% {
-        -webkit-transform:translateY(0);    
-      }
-      100%{
-        -webkit-transform:translateY(-100%);
-      }
-    }
-    </style>
+    <link href="/css/slideshow.css" rel="stylesheet">
+    <link href="/css/front.css" rel="stylesheet">
 
   </head>
 
@@ -346,45 +26,11 @@
         <div class="col col-md-12">
           <!-- Contenu (pub/infos/vidéos) ici -->
           <!-- <iframe src="/sozi/first.html" type="image/svg+xml" id="content"></iframe> -->
-          <ul id="content">
-              <li>
-                <h3>TinySlideshow v1</h3>
-                <span>images/CUBA-2.jpg</span>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut urna. Mauris nulla. Donec nec mauris. Proin nulla dolor, bibendum et, dapibus in, euismod ut, felis.</p>
-                <a href="#"><img src="thumbnails/squid-thumb.jpg" alt="Squid" /></a>
-              </li>
-              <li>
-                <h3>Sea Turtle</h3>
-                <span>images/havana-salsa.jpg</span>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut urna. Mauris nulla. Donec nec mauris. Proin nulla dolor, bibendum et, dapibus in, euismod ut, felis.</p>
-                <a href="#"><img src="thumbnails/squid-thumb.jpg" alt="Squid" /></a>
-              </li>
-              <li>
-                <h3>Red Coral</h3>
-                <span>images/rues-de-havana-a-cuba-avec-voitures-americaines-vintage.jpg</span>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut urna. Mauris nulla. Donec nec mauris. Proin nulla dolor, bibendum et, dapibus in, euismod ut, felis.</p>
-                <a href="#"><img src="thumbnails/squid-thumb.jpg" alt="Squid" /></a>
-              </li>
-            </ul>
-              <div id="wrapper">
-                <div id="fullsize">
-                  <div id="imgprev" class="imgnav" title="Previous Image"></div>
-                  <div id="imglink"></div>
-                  <div id="imgnext" class="imgnav" title="Next Image"></div>
-                  <div id="image"></div>
-                  <div id="information">
-                    <h3></h3>
-                    <p></p>
-                  </div>
-                </div>
-                <div id="thumbnails">
-                  <div id="slideleft" title="Slide Left"></div>
-                  <div id="slidearea">
-                    <div id="slider"></div>
-                  </div>
-                  <div id="slideright" title="Slide Right"></div>
-                </div>
-              </div>
+          
+          <div id="content" class="cycle-slideshow" data-cycle-fx="scrollHorz" data-cycle-timeout="3000">
+            <div class="cycle-caption"></div>
+          </div>
+
         </div> 
       </div>
       <div class="row" id="songs">
@@ -402,7 +48,7 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/socket.io-1.4.5.js"></script>
-    <script src="/js/slideshow.js"></script>
+    <script src="/js/jquery.cycle2.js"></script>
     <script>
       var socket = io.connect('{{{socketIoUrl}}}');
       var current = '{{current}}';
@@ -421,29 +67,33 @@
         // socket.emit('my other event', { my: 'data' });
       });
 
-      socket.on('image', function (data) {
+      socket.on('slideshow', function (data) {
         console.log(data);
-        $('#content').replaceWith('<div id="content"><img src="' + data.url + '" alt="image" /></div>');
+        $('#content').replaceWith('<div id="content" class="cycle-slideshow" data-cycle-fx="scrollHorz" data-cycle-timeout="3000"><div class="cycle-caption"></div></div>');
+        $('#content').cycle();
+        for (var i=0; i < data.images.length; i++) {
+          $('#content').cycle('add', data.images[i]);
+        }
         // socket.emit('my other event', { my: 'data' });
       });
 
 
       // $('slideshow').style.display='none';
       // $('#wrapper').style.display='block';
-      var slideshow=new TINY.slideshow("content");
-      window.onload=function(){
-        slideshow.auto=true;
-        slideshow.speed=5;
-        slideshow.link="linkhover";
-        slideshow.info="information";
-        slideshow.thumbs="slider";
-        slideshow.left="slideleft";
-        slideshow.right="slideright";
-        slideshow.scrollSpeed=4;
-        slideshow.spacing=5;
-        slideshow.active="#fff";
-        slideshow.init("slideshow","image","imgprev","imgnext","imglink");
-      }
+      // var slideshow=new TINY.slideshow("content");
+      // window.onload=function(){
+      //   slideshow.auto=true;
+      //   slideshow.speed=5;
+      //   slideshow.link="linkhover";
+      //   slideshow.info="information";
+      //   slideshow.thumbs="slider";
+      //   slideshow.left="slideleft";
+      //   slideshow.right="slideright";
+      //   slideshow.scrollSpeed=4;
+      //   slideshow.spacing=5;
+      //   slideshow.active="#fff";
+      //   slideshow.init("slideshow","image","imgprev","imgnext","imglink");
+      // }
 
     </script>
   </body>

@@ -64,27 +64,16 @@
             </table>
           </div>
 
-          <h2 class="sub-header">Images</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Fichier image</th>
-                  <th>Aperçu</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="img-list">
-                {{#images}}
-                  <tr>
-                    <td>{{.}}</td>
-                    <td><img class="thumb" src="/images/{{.}}" alt="{{.}}" /></td>
-                    <td><button type="button" class="btn btn-sm" data-src="/images/{{.}}">Afficher</button>
-                  </tr>
-                {{/images}}
-              </tbody>
-            </table>
+          <h2 class="sub-header">Galeries d'images</h2>
+          {{#slideshows}}
+          <div class="slideshow">
+          <div style="float:right"><button type="button" class="btn btn-sm" data-name="{{name}}">Afficher</button></div>
+          <h3>{{name}}</h3>
+          {{#content}}
+            <img class="thumb" src="/images/{{name}}/{{.}}" alt="{{.}}" />
+          {{/content}}
           </div>
+          {{/slideshows}}
 
         </div>
       </div>
@@ -111,13 +100,14 @@
           }, 'json');
         });
 
-        $('#img-list').find('button').click(e => {
+        $('.slideshow').find('button').click(e => {
           var $btn = $(e.target);
-          var imageUrl = $btn.data('src');
+          // var imageUrl = $btn.data('name');
           var data = {
-            type: 'image', url: imageUrl
+            name:  $btn.data('name')
+          //   type: 'image', url: imageUrl
           };
-          $.post( '/admin/display', data, data => {
+          $.post( '/admin/slideshow', data, data => {
             console.log(data);
             // $('#list-body').append('<tr><td>' + data.id + '</td><td>' + data.title + '</td></tr>');
           }, 'json');
